@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Кем быть? — тест профессий</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&family=Manrope:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Marck+Script&family=Bad+Script&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#120b0b;--bur:#8a2233;--bur2:#c23a4f;--bei:#e8d9c0;--mut:#a89880}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;color:var(--bei);font-family:Manrope,system-ui,sans-serif;
+background:radial-gradient(circle at 15% 8%,#5e1724 0,transparent 45%),radial-gradient(circle at 92% 92%,#43301f 0,transparent 50%),var(--bg)}
+h1,h2,.hd{font-family:Unbounded,Georgia,serif}
+.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(env(safe-area-inset-top,0px) + 26px) 20px 40px;z-index:2}
+.screen.on{display:flex;animation:fi .5s both}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.box{margin:auto 0;width:100%;max-width:420px}
+h1{font-size:30px;line-height:1.12;font-weight:800;letter-spacing:-.5px}
+h2{font-size:21px;line-height:1.25;font-weight:800;margin-bottom:18px}
+p.d{color:var(--mut);line-height:1.55;margin:14px 0 26px;font-size:15px}
+.btn{display:block;width:100%;padding:16px;border:0;border-radius:16px;font:800 16px Manrope,sans-serif;color:var(--bei);cursor:pointer;
+background:linear-gradient(135deg,var(--bur),var(--bur2));box-shadow:0 8px 28px #8a223355;margin-top:12px;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;border:1.5px solid var(--bei);box-shadow:none}
+.btn small{display:block;font-weight:600;opacity:.75;margin-top:4px;font-size:13px}
+.btn.lock{background:#2a1c1c;color:#b9a98f;box-shadow:none;border:1px solid #4a3030}
+.btn.glow{box-shadow:0 0 30px #e8d9c066,0 8px 28px #c23a4f88}
+.lnk{background:none;border:0;color:var(--mut);text-decoration:underline;font:600 14px Manrope;margin-top:22px;cursor:pointer}
+input,textarea{width:100%;padding:15px;margin-bottom:12px;border-radius:14px;border:1.5px solid #5a4638;background:#1d1212;color:var(--bei);font:600 16px Manrope,sans-serif;outline:0}
+input:focus,textarea:focus{border-color:var(--bur2)}
+/* люди на фоне */
+.people{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.people span{position:absolute;font-size:52px;opacity:.9;filter:drop-shadow(0 6px 10px #0008);animation:bob 4s ease-in-out infinite}
+.people em{position:absolute;font-size:22px;font-style:normal;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-16px) rotate(5deg)}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 #3ddc8488}50%{opacity:.4;box-shadow:0 0 0 7px #3ddc8400}}
+/* тест */
+.bar{width:100%;max-width:420px;height:6px;border-radius:9px;background:#2a1c1c;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--bur),var(--bei));transition:width .4s}
+.mascot{font-size:64px;animation:bob 3s ease-in-out infinite;margin:16px 0 4px}
+.cnt{color:var(--mut);font-size:13px;margin-bottom:8px}
+.opt{display:block;width:100%;text-align:left;padding:15px 16px;margin-top:10px;border-radius:14px;border:1.5px solid #5a4638;background:#1d1212cc;color:var(--bei);font:600 15px Manrope;cursor:pointer;animation:fi .4s both}
+.opt:active{background:var(--bur);border-color:var(--bur2)}
+/* игры */
+html,body{background:radial-gradient(circle at 50% 0,#3a0d10,#220707 70%)!important}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#bg path{fill:none;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:dr 2.2s cubic-bezier(.55,.1,.25,1) forwards}
+@keyframes dr{to{stroke-dashoffset:0}}
+.hm{width:100%;max-width:420px;margin:0 auto;padding:70px 4px 200px;text-align:center}
+.hm>*{opacity:0;animation:fu .8s both}
+.big{font-family:Unbounded,Georgia,serif;font-weight:800;font-size:min(12.5vw,54px);color:#2a0808;-webkit-text-stroke:2.5px var(--bei);text-shadow:3px 3px 0 #000;letter-spacing:-1px;margin:0}
+.sub{font-family:Manrope,sans-serif;font-weight:800;font-size:min(5.2vw,21px);line-height:1.25;color:#2a0808;-webkit-text-stroke:1.2px var(--bei);text-shadow:2px 2px 0 #000;margin:38px 0 0}
+.tx{font-size:16px;line-height:1.55;color:var(--bei);margin:56px 8px 0}.tx.sm{font-size:15px;margin-top:18px}
+.ln{display:flex;align-items:center;gap:14px;margin:78px 0 0;font:800 22px Manrope}.ln i{flex:1;height:2px;background:var(--bei)}
+.bl{display:flex;gap:14px;text-align:left;margin:30px 6px 0;line-height:1.5;font-size:15px}.bl u{flex:none;width:18px;height:18px;border-radius:50%;background:var(--bei);margin-top:4px}
+.stp{display:flex;gap:16px;align-items:center;text-align:left;margin:34px 6px 0;font-size:16px;line-height:1.45}
+.stp u{flex:none;width:52px;height:52px;border-radius:50%;border:3px solid var(--bei);display:flex;align-items:center;justify-content:center;font:800 24px Manrope;text-decoration:none}
+.pill{display:block;width:100%;margin-top:90px;padding:20px;border-radius:44px;border:3px solid var(--bei);background:#2a0808;color:var(--bei);font:800 26px Manrope;cursor:pointer;box-shadow:0 0 0 6px #2a0808,0 10px 40px #000a}
+.hn{font-size:12px;color:var(--mut);margin:6px 6px 0;line-height:1.4}
+#game{position:fixed;inset:0;z-index:20;display:none;background:#1a0606;flex-direction:column;align-items:center;padding-top:calc(env(safe-area-inset-top,0px) + 54px)}
+#game.on{display:flex;animation:fi .4s both}#game.out{opacity:0;transition:opacity .6s}
+.hint{font:600 13px Manrope;color:var(--mut);text-align:center;padding:0 20px}
+#game canvas{margin-top:10px;touch-action:none;border-radius:16px;max-width:100%}
+.skip{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;background:#ffffff1c;border:0;color:#fffc;padding:9px 15px;border-radius:20px;font:600 13px Manrope}
+.fm{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:30px;background:#000b;z-index:3}
+/* результаты / сертификат */
+.row{padding:12px 14px;border-radius:12px;background:#1d1212cc;margin-top:8px;font-weight:600;font-size:15px}
+.row.g{border-left:4px solid #3ddc84}.row.r{border-left:4px solid var(--bur2)}.row.s{border-left:4px solid var(--bei)}
+h3{font:800 13px Unbounded;margin:22px 0 4px;color:var(--mut)}
+#toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translate(-50%,-90px);background:#2a1212;border:1.5px solid var(--bur2);padding:13px 18px;border-radius:14px;z-index:99;font-weight:700;width:calc(100% - 32px);max-width:400px;transition:.35s;text-align:center}
+#toast.on{transform:translate(-50%,0)}
+.card{width:100%;max-width:420px;padding:26px 20px;border-radius:22px;background:linear-gradient(160deg,#2a1218,#120b0b 60%,#2b2014);border:1px solid #e8d9c055;text-align:center}
+.fu{opacity:0;animation:fu .7s both}@keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.ttl{font:800 15px Unbounded;letter-spacing:.28em;margin-top:8px}
+.meta{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-top:14px;letter-spacing:.08em}
+.arch{font:800 28px Unbounded;line-height:1.2;margin:24px 0 8px;background:linear-gradient(90deg,#f3e6cf,#ff6b81,#f3e6cf);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px #c23a4f88)}
+.chart{position:relative;height:270px;margin-top:18px}
+.acc{text-align:left;margin-top:8px;border:1px solid #5a4638;border-radius:14px;background:#1d1212aa;overflow:hidden;cursor:pointer}
+.acc .h{padding:14px 16px;font-weight:800;display:flex;justify-content:space-between}
+.acc .bd{max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:14px;line-height:1.5;color:var(--mut);padding:0 16px}
+.acc.o .bd{padding-bottom:14px}.acc.o .h span{transform:rotate(180deg)}.shot .bd{max-height:none!important}
+.ai{font-size:12px;color:var(--mut);margin-top:22px;display:flex;gap:8px;justify-content:center;align-items:center}
+.ai i{width:8px;height:8px;border-radius:50%;background:#3ddc84;animation:pulse 1.5s infinite}
+#cc{width:100%;max-width:420px;border-radius:4px;box-shadow:0 10px 40px #000a;margin-bottom:18px}
+/* финальная страница: тёмно-синий фон и молочные линии */
+#nv{position:fixed;inset:0;z-index:1;display:none;background:radial-gradient(circle at 50% 30%,#06194a,#021339 70%)}
+#nv.on{display:block;animation:nvf .6s both}@keyframes nvf{from{opacity:0}to{opacity:1}}
+#nv svg{width:100%;height:100%}
+#nv path{fill:none;stroke:#eadbc0;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:dr 1.5s cubic-bezier(.55,.1,.25,1) forwards}
+#nv.fast path{animation-duration:.01s!important;animation-delay:0s!important}
+.rv{opacity:0;animation:fu .7s both}
+#res,#res h2,#res h3{color:#eadbc0}
+#res .row{background:#ffffff10;color:#eadbc0;border-left:3px solid #eadbc0}
+#res .btn{background:transparent;border:1.5px solid #eadbc0;color:#eadbc0;box-shadow:none}
+#res .btn.glow{background:#eadbc0;color:#021339;box-shadow:0 0 28px #eadbc055}
+#res .btn.lock{background:#0a1a45;color:#7f88a8;border:1px solid #1d2c5e}
+#toast{top:calc(env(safe-area-inset-top,0px) + var(--tt,0px) + 56px);transform:translate(-50%,-220%);opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.2,.9,.3,1),opacity .3s}
+#toast.on{transform:translate(-50%,0);opacity:1}
+#share,#share h2{color:#eadbc0}#share .d{color:#cfc2a8}
+#share .btn.glow{background:#eadbc0;color:#021339;box-shadow:0 0 28px #eadbc055}
+.opt{display:flex;align-items:center}.opt.sel{border-color:#e8d9c0;background:#3a1a1ccc}
+.ck{display:none;flex:none;width:20px;height:20px;border-radius:50%;border:2px solid #8a7f72;margin-right:12px;transition:.2s}
+.m .ck{display:inline-block}.opt.sel .ck{background:#e8d9c0;border-color:#e8d9c0;box-shadow:0 0 10px #e8d9c088}
+.two{display:flex;gap:10px;margin-top:16px}.two .btn{flex:1;margin-top:0;padding:14px 6px;font-size:14px}.two .btn.on{background:#e8d9c0;color:#2a0808}
+#cf{display:none;margin-top:12px}#cf .btn{margin-top:0}
+.pi{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;background:#1d1212cc;margin-top:8px;font-weight:600;cursor:pointer}
+.pi i{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #8a7f72;transition:.2s}.pi.x i{background:#e5383b;border-color:#e5383b;box-shadow:0 0 12px #e5383b}
+.spin{width:54px;height:54px;border-radius:50%;border:4px solid #4a3030;border-top-color:#e8d9c0;margin:0 auto 20px;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.bk{display:block;background:none;border:0;color:var(--bei);opacity:.8;font:700 14px Manrope,sans-serif;padding:6px 0;margin-bottom:8px;cursor:pointer}
+</style></head><body>
+<svg id="bg" viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice"></svg><div id="nv"></div>
+<div id="toast"></div>
+
+<section class="screen on" id="home"><div class="hm">
+<h1 class="big">АРХЕТИП</h1>
+<h2 class="sub">ТВОИ СКРЫТЫЕ ТАЛАНТЫ. В ОДНОМ ЦИФРОВОМ ПРОФИЛЕ.</h2>
+<p class="tx">Интуитивный тест, который поможет взглянуть на себя со стороны. Доверяй первому импульсу, выбирай то, что откликается, и проявляй свой истинный потенциал.</p>
+<div class="ln"><i></i><b>РЕЗУЛЬТАТ:</b><i></i></div>
+<p class="tx sm">В конце теста ты получишь:</p>
+<p class="bl"><u></u><span><b>Именной сертификат</b> с характеристикой личности.</span></p>
+<p class="bl"><u></u><span><b>Подходящие и неподходящие профессии и специальности</b> — сферы, где твои таланты раскроются на максимум.</span></p>
+<div class="ln"><i></i><b>КАК ЭТО РАБОТАЕТ</b><i></i></div>
+<div class="stp"><u>1</u><span>Ты проходишь тест с простыми жизненными вопросами.</span></div>
+<div class="stp"><u>2</u><span>Программа анализирует твои ответы и подбирает подходящие тебе профессии.</span></div>
+<div class="stp"><u>3</u><span>В конце приложение выдаёт подходящие и неподходящие тебе профессии, а также 5 специальностей, которые больше всего тебе подойдут.</span></div>
+<button class="pill" onclick="show('name')">УЗНАТЬ АРХЕТИП</button></div></section>
+
+<section class="screen" id="name"><div class="box"><h2>Как тебя зовут?</h2>
+<input id="n1" placeholder="Имя" autocomplete="given-name"><input id="n2" placeholder="Фамилия" autocomplete="family-name"><input id="n3" placeholder="Отчество (по желанию)">
+<button class="btn" onclick="sub()">Подтвердить</button></div></section>
+
+<section class="screen" id="count"><div class="box"><h2>Выбери глубину анализа</h2>
+<button class="btn ghost" onclick="pickN(15)">Лёгкий · 15 вопросов<small>точность 25% · ≈ 4 минуты</small></button>
+<p class="hn">⚠ В этом режиме сертификат не выдаётся</p>
+<button class="btn" onclick="pickN(30)">Средний · 30 вопросов<small>точность 75% · ≈ 8 минут</small></button>
+<button class="btn glow" onclick="pickN(50)">Высокий · 50 вопросов<small>максимальный анализ, 100% · ≈ 13 минут</small></button></div></section>
+
+<section class="screen" id="brk"><div class="box"><h2>Сколько игр-перерывов?</h2>
+<button class="btn" onclick="pickB(1)">1 игра-перерыв</button>
+<button class="btn" onclick="pickB(2)">2 игры-перерыва</button>
+<button class="btn" onclick="pickB(3)">3 игры-перерыва</button></div></section>
+
+<section class="screen" id="quiz"><div class="bar"><i id="pb"></i></div><div class="box" style="margin-top:0"><button class="bk" id="bk" onclick="goBack()">← К предыдущему вопросу</button><div class="cnt" id="ct"></div><h2 id="qt"></h2><div id="qo"></div><div class="two"><button class="btn ghost" id="bm" onclick="tm()">☑ Выбрать несколько</button><button class="btn ghost" id="bc" onclick="tc()">✏ Свой вариант</button></div><div id="cf"><textarea id="ta" rows="3" placeholder="Напиши свой вариант"></textarea><button class="btn glow" onclick="addC()">Добавить</button></div><button class="btn glow" id="go" style="display:none" onclick="goN()">Продолжить</button></div></section>
+
+<section class="screen" id="offer"><div class="box" style="text-align:center"><div style="font-size:46px">🎮</div><h2 id="ot"></h2>
+<button class="btn glow" onclick="show('gmenu')">Да, поиграть</button><button class="btn ghost" onclick="render()">Нет, продолжить</button></div></section>
+
+<section class="screen" id="gmenu"><div class="box"><h2>Выбери игру</h2>
+<button class="btn" onclick="play(0)">⚽ Футбол: пенальти</button><p class="hn">Зажми мяч, потяни вверх и отпусти. Забей 7 голов — ворота будут двигаться и отдаляться.</p>
+<button class="btn" onclick="play(1)">🏀 Баскетбол</button><p class="hn">Зажми мяч и подкинь его в кольцо. Нужно 7 попаданий, кольцо смещается.</p>
+<button class="btn" onclick="play(2)">🟡 Колобок</button><p class="hn">Держи палец на экране — мост растёт, отпусти — он ляжет. Пройди 7 островков.</p>
+<button class="btn ghost" style="margin-top:22px" onclick="render()">Пропустить</button></div></section>
+
+<section class="screen" id="pre"><div class="box"><h2>Предварительный анализ профессий</h2><p class="d">Выберите из списка профессии, которые вам вообще не подходят. Если ничего не выбрать, значит подходят все.</p><div id="pl"></div><button class="btn glow" style="margin-top:20px" onclick="preNext()">Далее</button></div></section>
+
+<section class="screen" id="load"><div class="box" style="text-align:center"><div class="spin"></div><h2>Анализируем ответы…</h2><p class="d">Сравниваем ваш профиль с профессиями</p></div></section>
+
+<section class="screen" id="res"><div class="box"><h2>Твой результат</h2><div id="rb"></div>
+<button class="btn" id="cb" onclick="certClick()">🏅 Сгенерировать PNG сертификат</button>
+<button class="btn ghost" id="rr" style="display:none" onclick="again()">Пройти тест заново · выбрать другой уровень</button></div></section>
+
+<section class="screen" id="share"><div class="box" style="text-align:center"><div style="font-size:54px">💌</div><h2>Отправь тест другу</h2>
+<p class="d">Чтобы открыть сертификат, отправь ссылку на тест хотя бы одному другу в Telegram.</p>
+<button class="btn glow" onclick="doShare()">Отправить ссылку</button></div></section>
+
+<section class="screen" id="cert"><canvas id="cc"></canvas><div class="box" style="margin:0"><button class="btn glow" onclick="dl()">⬇ Скачать PNG сертификат</button><button class="btn ghost" onclick="back()">← Вернуться к моим профессиям</button><button class="btn ghost" id="ra" onclick="again()">Пройти тест заново</button></div></section>
+<div id="game"></div>
+
+<script>
+const tg=window.Telegram&&Telegram.WebApp;if(tg){tg.ready();tg.expand();try{tg.disableVerticalSwipes()}catch(e){}document.documentElement.style.setProperty('--tt',((tg.safeAreaInset&&tg.safeAreaInset.top||0)+(tg.contentSafeAreaInset&&tg.contentSafeAreaInset.top||0))+'px')}
+const APP_URL='https://t.me/YOUR_BOT/app'; // ← замени на ссылку своего мини-приложения
+const $=s=>document.querySelector(s),AX=['Логика','Креативность','Коммуникация','Системность','Практичность'];
+const show=id=>{document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));const e=$('#'+id);e.classList.add('on');e.scrollTop=0;$('#nv').classList.toggle('on',id=='res'||id=='share')};
+const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),3200)};
+let st={};
+
+/* кисть */
+(()=>{const D=[['M-5 40C22 34 48 18 66 -6',2.6,0],['M-5 47C25 40 52 24 74 -6',.5,.3],['M76 -6C80 14 90 30 106 40',2.2,.5],['M84 -6C88 12 96 24 106 32',.5,.8],['M-6 152C18 156 34 176 58 206',2.4,.9],['M-6 160C14 166 28 182 46 206',.5,1.2],['M106 150C92 168 88 190 72 206',2.6,1.1],['M106 164C98 176 94 192 84 206',.5,1.4]];
+$('#bg').innerHTML=D.map(d=>`<path d="${d[0]}" pathLength="1" stroke="#000" stroke-width="${d[1]*1.1}" transform="translate(.6,.9)" style="animation-delay:${d[2]}s"/><path d="${d[0]}" pathLength="1" stroke="#e8d9c0" stroke-width="${d[1]}" style="animation-delay:${d[2]}s"/>`).join('');
+document.querySelectorAll('.hm>*').forEach((e,i)=>e.style.animationDelay=(1+i*.2)+'s')})();
+
+(()=>{const T=[['M0 245C110 190 230 150 300 70S335 10 345 -5',13,.4,1.4],['M0 325C100 230 260 210 340 120S395 30 405 -5',2,.5,1.5],['M945 50C800 130 700 230 712 365',2,.6,1.3],['M945 335C850 440 740 540 732 640C728 740 820 820 945 860',14,.7,1.6],['M712 712C740 820 830 900 945 945',2,.8,1.4],['M0 685C120 800 225 940 222 1090C215 1230 100 1350 0 1420',2,.6,1.7],['M0 850C100 880 250 960 305 1070C350 1160 340 1250 290 1340C240 1420 170 1470 110 1505',14,.8,1.6],['M380 1672C520 1620 650 1520 760 1465C830 1430 900 1420 945 1430',13,.9,1.5],['M625 1525C740 1420 850 1340 945 1290',2,1,1.3],['M545 1672C640 1590 700 1520 740 1480',2,1.1,1.2]];
+const m=(d,o,w,p,t)=>`<path d="${d}" pathLength="1" stroke-width="${w}" opacity="${p}" transform="translate(${o},${o*.6})" style="animation-delay:${t[2]}s;animation-duration:${t[3]}s"/>`;
+$('#nv').innerHTML='<svg viewBox="0 0 940 1672" preserveAspectRatio="xMidYMid slice">'+T.map(t=>t[1]>5?m(t[0],0,t[1],1,t)+m(t[0],-4,t[1]*.4,.7,t)+m(t[0],4,t[1]*.35,.6,t):m(t[0],0,t[1],1,t)).join('')+'</svg>'})();
+function revealRes(q){[$('#res h2'),...$('#rb').children,$('#cb'),$('#rr')].forEach((e,i)=>{e.classList.remove('rv');void e.offsetWidth;e.style.animationDelay=((q?.1:2.6)+i*(q?.05:.2))+'s';e.classList.add('rv')})}
+function sub(){const a=$('#n1').value.trim(),b=$('#n2').value.trim(),c=$('#n3').value.trim();
+if(!a||!b)return toast('❗ Введи имя и фамилию');st.fio=[b,a,c].filter(Boolean).join(' ');show('count')}
+const pickN=n=>{st.N=n;show('brk')},pickB=b=>{st.B=b;start()};
+
+/* вопросы: 14 ситуаций × 5 вариантов (по одному на каждый навык), в каждом показываем 4 */
+/* 40 общих + 10 бытовых вопросов, все темы разные. Вариант: 'текст|ось' или 'текст|осьСреда'.
+Оси: 0 логика, 1 креатив, 2 общение, 3 системность, 4 практика. Среда: 0 люди, 1 животные/природа, 2 тишина/удалённо, 3 руками */
+const GQ=[
+['Друг просит помочь с проектом. Ты…','Подумаю, как сделать разумно|0','Придумаю необычную идею|1','Подбодрю всех|2','Составлю чёткий план|3','Сразу начну делать|4'],
+['Идеальный выходной — это…','Решать головоломки|0','Рисовать, снимать, сочинять|1','Встречи с друзьями|2','Разобрать шкаф и всё разложить|3','Что-то починить или собрать|4'],
+['Случилась беда, все растерялись. Ты…','Быстро пойму, что случилось|0','Найду нестандартный выход|1','Успокою людей|2','Пойду по инструкции|3','Сразу начну действовать|4'],
+['Что бесит сильнее всего?','Нелогичные решения|0','Скучные шаблоны|1','Молчание и недомолвки|2','Хаос и бардак|3','Болтовня без дела|4'],
+['Тебе дали миллион на своё дело. Первым делом…','Посчитаю, сколько и на что нужно|0','Придумаю идею и название|1','Соберу людей|2','Продумаю, кто что делает|3','Сделаю пробный вариант|4'],
+['Ты в чужом городе без плана…','Изучу карту|0','Пойду туда, где красиво|1','Заговорю с местными|2','Составлю расписание|3','Пойду пешком, разберусь на месте|4'],
+['Какое хобби тебе ближе?','Шахматы или судоку|0','Рисование или музыка|1','Клубы по интересам|2','Коллекции и каталоги|3','Рукоделие или модели|4'],
+['Какую суперсилу выберешь?','Быстро разбираться в любых цифрах|0','Оживлять любые свои фантазии|1','Убеждать кого угодно|2','Видеть, как всё связано|3','Делать всё руками|4'],
+['Ты делаешь подарок другу. Это будет…','Хитрая головоломка|0','Рисунок или видео|1','Вечер-сюрприз для компании|2','Подарок, где всё продумано до мелочей|3','Полезная вещь на заказ|4'],
+['Как готовишь праздник?','Считаю, сколько нужно денег|0','Придумываю тему и декор|1','Развлекаю гостей|2','Расписываю, что за чем|3','Сам всё готовлю|4'],
+['Какую игру выберешь?','Стратегию|0','Игру, где можно строить и творить|1','Командный шутер|2','Игру, где всем управляешь|3','Гонки или спорт|4'],
+['Появился новый гаджет. Ты…','Разберу, как он работает|0','Придумаю, как использовать по-новому|1','Расскажу всем|2','Подумаю, как вписать в жизнь|3','Попробую в деле|4'],
+['Какие видео смотришь чаще?','Разборы и расследования|0','Про творчество и дизайн|1','Интервью и разговоры|2','Как это устроено и сделано|3','Ремонт и «сделай сам»|4'],
+['Какой школьный предмет любил больше?','Математика|0','Литература или ИЗО|1','Дебаты и обществознание|2','Информатика и порядок в тетрадях|3','Труд и физкультура|4'],
+['Завтра важный экзамен или тест. Ты…','Ищу, как всё связано|0','Придумываю смешные запоминалки|1','Объясняю вслух другу|2','Делаю конспект и схемы|3'],
+['Ты нашёл ошибку в чужой работе. Ты…','Докажу фактами|0','Предложу творческое решение|1','Мягко скажу автору|2','Запишу, что нужно исправить|3'],
+['Перед важным решением ты…','Взвешиваю плюсы и минусы|0','Слушаю интуицию|1','Советуюсь с близкими|2','Смотрю на правила и опыт|3','Пробую на малом|4'],
+['Тебе дали срок, к которому всё нужно сделать. Как к этому относишься?','Это понятный ориентир|0','Срок мешает творить|1','Срок сближает команду|2','Срок святой, всё по графику|3'],
+['Как реагируешь на критику?','Проверю, правда ли это|0','Переделаю по-своему|1','Обсужу лично|2','Составлю план, как стать лучше|3'],
+['В команде спор. Твоя роль:','Аргументы и факты|0','Свежий взгляд|1','Посредник|2','Тот, кто наводит порядок|3','Тот, кто сделает|4'],
+['Друг в беде. Ты…','Разберу ситуацию и найду решение|0','Придумаю, как его развеселить|1','Выслушаю|2','Составлю план выхода|3','Приеду и помогу делом|4'],
+['Первый день на новой работе. Что делаешь?','Разбираюсь в задачах|0','Предлагаю свежие идеи|1','Знакомлюсь со всеми|2','Изучаю правила и расписание|3','Берусь за первое дело|4'],
+['Идеальный начальник…','Говорит по делу и ценит логику|0','Даёт свободу|1','Вдохновляет|2','Задаёт чёткие правила|3'],
+['Какие приложения на главном экране?','Калькулятор и таблицы|0','Камера и фоторедакторы|1','Мессенджеры и соцсети|2','Заметки и расписание|3','Навигатор и фитнес|4'],
+['На что тратишь деньги?','Считаю, что выгоднее|0','На впечатления и красивые вещи|1','На подарки и встречи|2','Откладываю по плану|3','На инструменты и нужное|4'],
+['Как выглядит твой рабочий стол?','Много данных и вкладок|0','Творческий хаос|1','Фото друзей и сувениры|2','Идеальный порядок|3','Инструменты под рукой|4'],
+['Знакомишься с человеком. Первый вопрос:','Как устроена твоя работа?|0','Что тебя вдохновляет?|1','Расскажи о себе|2','Какие у тебя планы?|3','Чем могу помочь?|4'],
+['Что делаешь после неудачи?','Разбираю причины|0','Пробую по-новому|1','Говорю с друзьями|2','Составляю план, как исправить|3','Сразу берусь снова|4'],
+['Затеял ремонт в квартире…','Посчитаю, сколько это стоит|0','Придумаю дизайн|1','Договорюсь с мастерами|2','Составлю расписание работ|3','Сделаю сам|4'],
+['В походе твоя роль:','Навигатор|0','Идеи маршрута и фото|1','Душа костра|2','Тот, кто всё взял по списку|3','Ставлю палатку и костёр|4'],
+['Вокруг всё меняется. Ты…','Думаю, к чему это приведёт|0','Вижу новые возможности|1','Обсуждаю с людьми|2','Перестраиваю свои дела|3','Подстраиваюсь по ходу|4'],
+['Как объясняешь сложное?','По шагам, одно из другого|0','Сравнением или рисунком|1','Разговором и вопросами|2','Списком по пунктам|3','Показываю на примере|4'],
+['Что приятнее услышать?','«Ты очень умный»|0','«Классная идея»|1','«С тобой тепло»|2','«На тебя можно положиться»|3','«Отличный результат»|4'],
+['Как относишься к правилам?','Если логично, соблюдаю|0','Нарушаю ради идеи|1','Договариваюсь об исключении|2','Правила — основа порядка|3','Работает — значит нормально|4'],
+['Что хочешь через 10 лет?','Сделать открытие или стать лучшим знатоком|0','Свой яркий проект|1','Большое сообщество вокруг|2','Порядок и стабильность во всём|3','Мастерскую и своё дело|4'],
+['Как ты обычно делаешь уроки или рабочие дела?','Сначала думаю, как лучше|0','Включаю фантазию|1','Договариваюсь с кем-то|2','По списку, по порядку|3','Сразу берусь за дело|4'],
+['С чего начинается твоё утро?','Читаю интересные факты|0','Включаю музыку и мечтаю|1','Пишу друзьям|2','Продумываю свой день|3','Зарядка или дела по дому|4'],
+['Что тебе проще: говорить или писать?','Говорить с людьми|2','Писать и придумывать тексты|1','Считать и решать|0','Делать руками|4','Составлять списки|3'],
+['Если бы ты вёл блог, он был бы про…','Науку и интересные факты|0','Творчество и стиль|1','Советы для людей|2','Порядок и организацию жизни|3','Спорт и «сделай сам»|4'],
+['Какой вид спорта ближе?','Шахматы и логические игры|0','Фигурное катание или танцы|1','Командные игры: футбол, волейбол|2','Бег и плавание по графику|3','Силовые и единоборства|4'],
+['Твоя команда проигрывает матч. Что делаешь?','Думаю, как обыграть соперника|0','Пробую неожиданный ход|1','Подбадриваю команду|2','Держусь плана игры|3','Бегу и давлю до конца|4'],
+['Какую профессию хотел в детстве?','Учёный или изобретатель|0','Художник или актёр|1','Учитель или врач|2','Директор или менеджер|3','Строитель, повар или спортсмен|4'],
+['О чём чаще говоришь с друзьями?','Наука и технологии|0','Фильмы, арт, идеи|1','Личные истории и чувства|2','Планы и цели|3','Спорт, авто, быт|4'],
+['Какая музыка тебя заводит?','Без слов, под неё хорошо думается|0','Необычная, непохожая на другие|1','Хиты, которые поют хором|2','Чёткий ритм без сюрпризов|3','Бодрая, для дел и тренировок|4']];
+const LQ=[
+['С кем тебе комфортнее?','В шумной компании|20','Рядом с домашними питомцами|41','Один, в тишине|02','В небольшой команде|30'],
+['Где хотелось бы работать?','В офисе с коллегами|30','Удалённо из дома|02','На природе|41','В мастерской или на стройке|43','Там, где много людей: школа, клиника, сцена|20'],
+['Какой график удобнее?','Строгий с 9 до 18|30','Свободный, сам решаю|12','Разъезды и поездки|40','Работа по задачам, когда как|43'],
+['Какой день тебе нравится больше?','Насыщенный встречами|20','Спокойный, без звонков|02','На свежем воздухе|41','В движении, руками|43'],
+['Как снимаешь стресс?','Побыть с людьми|20','Обнять питомца или выйти в лес|41','Уйти в свой мир|12','Заняться делом руками|43'],
+['Что больше выматывает?','Постоянное общение|02','Одиночество|20','Рутина|10','Когда всё непонятно|30'],
+['Где тебе легче дышится?','В большом городе среди людей|20','В лесу или у воды|41','Дома в тишине|02','В мастерской или цеху|43'],
+['Как относишься к клиентам и посетителям?','Люблю общаться с каждым|20','Лучше без лишнего общения, главное результат|02','Помогаю делом, а не словами|43','Только по чётким правилам|30'],
+['Что бы носил на работе?','Деловой стиль|30','Свободную одежду|12','Спецодежду|43','Удобное для улицы и природы|41'],
+['Как проводишь обед на работе?','С коллегами|20','Один с книгой|02','Выхожу на воздух|41','Не обедаю, пока не закончу дело|43']];
+const sh=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+
+const KW=[/счит|цифр|логик|науч|математ|програм|код|данн|анализ|исслед|физик|хим|задач|разбира|эксперимент|шахмат|компьютер|информат|биолог|астроном|расч[её]т|формул/gi,/рису|творч|иде[июя]|дизайн|музык|фантаз|созда|писат|писа|фото|видео|театр|сочин|красив|стиль|худож|петь|танц|кино|придум|мода/gi,/люд|помо|общ|друз|команд|учит|разговор|поддерж|дет[иейях]|лечи|слуша|объясн|консульт|выступ|школ|клиент|волонт|психолог/gi,/план|порядок|организ|график|систем|список|учёт|документ|расписан|аккурат|правил|структур|отч[её]т|менедж|управл|контрол/gi,/делат|руками|строи|ремонт|готов|спорт|техник|машин|трен|чинить|природ|животн|механик|садов|ферм|водит|стройк|инструмент/gi];
+const cv=t=>{const c=KW.map(r=>(t.match(r)||[]).length),z=c.reduce((a,b)=>a+b,0);return z?c.map(v=>v/z):[.2,.2,.2,.2,.2]};
+function start(){const N=st.N;st.i=0;st.P=[0,0,0,0,0];st.O=[0,0,0,0,0];st.E=[0,0,0,0];st.EO=[0,0,0,0];st.cs=[];st.h=[];st.seen=new Set();
+const pp=a=>{const[t,c]=a.split('|');return[t,+c[0],c[1]===undefined?undefined:+c[1]]},nl=Math.round(N*.2);
+st.qs=sh([...sh(LQ).slice(0,nl),...sh(GQ).slice(0,N-nl)]).map(a=>({t:a[0],o:a.slice(1).map(pp)}));
+const F={1:[[1,2,'половину']],2:[[1,3,'треть'],[2,3,'две трети']],3:[[1,4,'четверть'],[1,2,'половину'],[3,4,'три четверти']]}[st.B];
+st.bd={};F.forEach(f=>st.bd[Math.round(N*f[0]/f[1])]=f[2]);next()}
+function next(){if(st.i>=st.N)return finish();const w=st.bd[st.i];
+if(w&&!st.seen.has(st.i)){st.seen.add(st.i);$('#ot').textContent=`Вы прошли ${w} вопросов. Хотите отдохнуть, поиграв в мини-игры?`;return show('offer')}render()}
+const mk=j=>{const x=st.op[j],b=document.createElement('button');b.className='opt';b.innerHTML='<i class="ck"></i><span></span>';b.lastChild.textContent=x[0];b.style.animationDelay=j*.05+'s';
+b.onclick=()=>{if(!st.m)return commit([j]);st.sel.has(j)?st.sel.delete(j):st.sel.add(j);b.classList.toggle('sel')};return b};
+function render(){show('quiz');const q=st.qs[st.i],N=st.N;st.m=0;st.sel=new Set();st.op=sh(q.o.map(x=>x.slice()));
+$('#pb').style.width=st.i/N*100+'%';$('#ct').textContent=`Вопрос ${st.i+1} из ${N}`;$('#qt').textContent=q.t;$('#cf').style.display='none';$('#ta').value='';$('#bk').style.visibility=st.h.length?'visible':'hidden';
+$('#qo').className='';$('#go').style.display='none';$('#bm').classList.remove('on');const o=$('#qo');o.innerHTML='';st.op.forEach((_,j)=>o.appendChild(mk(j)))}
+function setM(v){st.m=v;$('#qo').classList.toggle('m',!!v);$('#go').style.display=v?'block':'none';$('#bm').classList.toggle('on',!!v);if(!v){st.sel.clear();[...$('#qo').children].forEach(e=>e.classList.remove('sel'))}}
+function goBack(){const h=st.h.pop();if(!h)return;st.P=h.P;st.O=h.O;st.E=h.E;st.EO=h.EO;st.cs.length=h.c;st.i=h.i;render()}
+function tm(){setM(!st.m)}
+function tc(){const c=$('#cf');c.style.display=c.style.display=='block'?'none':'block';if(c.style.display=='block')$('#ta').focus()}
+function addC(){const t=$('#ta').value.trim();if(!t)return toast('❗ Напиши свой вариант');st.op.push([t,0,undefined,1]);const j=st.op.length-1,b=mk(j);$('#qo').appendChild(b);
+setM(1);st.sel.add(j);b.classList.add('sel');$('#ta').value='';$('#cf').style.display='none'}
+function goN(){if(!st.sel.size)return toast('❗ Выбери хотя бы один вариант');commit([...st.sel])}
+function commit(l){const k=l.length;st.h.push({P:[...st.P],O:[...st.O],E:[...st.E],EO:[...st.EO],c:st.cs.length,i:st.i});st.op.forEach(x=>{if(!x[3]){st.O[x[1]]++;if(x[2]!==undefined)st.EO[x[2]]++}});
+l.forEach(j=>{const x=st.op[j],w=1/k;if(x[3])st.cs.push({t:x[0],q:st.qs[st.i].t,w,v:cv(x[0])});else st.P[x[1]]+=w;if(x[2]!==undefined)st.E[x[2]]+=w});st.i++;next()}
+
+/* ИГРЫ */
+let G={};const HT=['Зажми мяч, потяни вверх и отпусти — забей 7 голов','Зажми мяч и подкинь его в кольцо — 7 попаданий','Держи экран — мост растёт; отпусти — он ляжет. Пройди 7 островков'];
+const pl=n=>n%10==1&&n%100!=11?'вопрос':[2,3,4].includes(n%10)&&(n%100<12||n%100>14)?'вопроса':'вопросов';
+function win(t){const k=Object.keys(st.bd).map(Number).filter(i=>i>st.i).sort((a,b)=>a-b)[0],n=k===undefined?0:k-st.i,r=st.N-st.i,f=$('#fm');
+const nx=k===undefined?`Это был последний перерыв: до результата осталось ${r} ${pl(r)}.`:`Возвращайтесь играть через ${n} ${pl(n)}.`;
+f.innerHTML=`<div style="font-size:54px;text-align:center">🏆</div><h2 style="text-align:center">Супер! ${t}</h2><p class="d" style="text-align:center">Отличная реакция и меткость, так держать! ${nx}</p><button class="btn glow">Продолжить тест</button>`;f.style.display='flex';f.querySelector('button').onclick=()=>stop(1)}
+function stop(d){G.run=0;const o=$('#game');if(d){o.classList.add('out');setTimeout(()=>{o.className='';o.innerHTML='';render()},600)}else{o.className='';o.innerHTML='';show('gmenu')}}
+function play(k){const o=$('#game');G={run:1};o.className='on';o.innerHTML=`<button class="skip">← К играм</button><div class="hint">${HT[k]}</div><canvas></canvas><div class="fm" id="fm"></div>`;
+o.querySelector('.skip').onclick=()=>stop(0);const cv=o.querySelector('canvas');cv.width=Math.min(innerWidth,420);cv.height=Math.max(300,innerHeight-112);
+try{const g=k<2?ballG(k,cv):kolo(cv,$('#fm'));const lp=()=>{if(G.run){try{g.t()}catch(e){}requestAnimationFrame(lp)}};lp()}catch(e){const f=$('#fm');f.innerHTML='<h2 style="text-align:center">Игра не запустилась</h2><button class="btn">Продолжить тест</button>';f.style.display='flex';f.querySelector('button').onclick=()=>stop(1)}}
+
+function fb(x,X,Y,r){x.save();x.beginPath();x.arc(X,Y,r,0,7);x.fillStyle='#fff';x.fill();x.clip();const kg=x.createLinearGradient(X,Y+r,X,Y-r);kg.addColorStop(0,'#000');kg.addColorStop(1,'#666');x.fillStyle=kg;x.strokeStyle=kg;x.lineWidth=Math.max(1,r*.07);
+const pg=(c,d,R,o)=>{x.beginPath();for(let i=0;i<5;i++){const a=o+i*1.2566;x[i?'lineTo':'moveTo'](c+R*Math.cos(a),d+R*Math.sin(a))}x.closePath();x.fill()};
+pg(X,Y,r*.36,-1.5708);for(let i=0;i<5;i++){const a=-1.5708+i*1.2566,c=Math.cos(a),d=Math.sin(a);x.beginPath();x.moveTo(X+c*r*.36,Y+d*r*.36);x.lineTo(X+c*r*.66,Y+d*r*.66);x.stroke();pg(X+c*r*1.02,Y+d*r*1.02,r*.4,a+3.1416)}
+x.restore();x.beginPath();x.arc(X,Y,r,0,7);x.strokeStyle='#8a8a8a';x.lineWidth=1;x.stroke()}
+function bb(x,X,Y,r){x.save();x.beginPath();x.arc(X,Y,r,0,7);const g=x.createLinearGradient(X,Y+r,X,Y-r);g.addColorStop(0,'#b53f0b');g.addColorStop(1,'#ffb766');x.fillStyle=g;x.fill();x.clip();x.strokeStyle='#2b1206';x.lineWidth=Math.max(1.5,r*.09);
+x.beginPath();x.moveTo(X,Y-r);x.lineTo(X,Y+r);x.moveTo(X-r,Y);x.lineTo(X+r,Y);x.stroke();x.beginPath();x.arc(X-r*1.5,Y,r*1.05,-.9,.9);x.stroke();x.beginPath();x.arc(X+r*1.5,Y,r*1.05,3.1416-.9,3.1416+.9);x.stroke();x.restore()}
+function ballG(m,cv){const x=cv.getContext('2d'),W=cv.width,H=cv.height,R=m?22:20;let sc=0,gx=W/2,gy=H*.26,gk=1,hx=W/2,hy=H*.33,b,sm=[],dn=0;
+const HB=H*.26+225.5-20*(.5+.5*(H*.26+225.5)/H),rs=()=>{b={x:W/2,y:m?H-60:HB,vx:0,vy:0,s:0}};rs();
+let PT;if(!m){PT=document.createElement('canvas');PT.width=W;PT.height=H;const q=PT.getContext('2d'),g=q.createLinearGradient(0,0,0,H);g.addColorStop(0,'#38a352');g.addColorStop(1,'#1b6a2f');q.fillStyle=g;q.fillRect(0,0,W,H);
+for(let i=0;i<2600;i++){q.fillStyle=Math.random()<.5?'rgba(255,255,255,.05)':'rgba(0,40,0,.09)';q.fillRect(Math.random()*W,Math.random()*H,1,2+Math.random()*3)}}
+const P=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+cv.onpointerdown=e=>{const[p,q]=P(e);if(b.s==0&&Math.hypot(p-b.x,q-b.y)<R+30){b.s=1;sm=[{x:p,y:q,t:performance.now()}]}};
+cv.onpointermove=e=>{if(b.s!=1)return;const[p,q]=P(e);b.x=p;b.y=q;sm.push({x:p,y:q,t:performance.now()});if(sm.length>6)sm.shift()};
+cv.onpointercancel=()=>{if(b.s==1)rs()};cv.onpointerup=()=>{if(b.s!=1)return;const a=sm[0],c=sm[sm.length-1],dt=Math.max(c.t-a.t,16);let vx=(c.x-a.x)/dt*16,vy=(c.y-a.y)/dt*16;const v=Math.hypot(vx,vy);if(v>24){vx*=24/v;vy*=24/v}
+if(vy>-3)return rs();b.vx=vx;b.vy=vy;b.s=2};
+const goal=()=>{sc++;if(sc>=7&&!dn){dn=1;setTimeout(()=>win(m?'Вы забили 7 из 7 мячей!':'Вы забили 7 из 7 голов!'),500)}gx=W*(.25+Math.random()*.5);hx=W*(.2+Math.random()*.6);gk=1-sc*.07;gy=H*.26-sc*6;rs()};
+return{t(){if(b.s==2){const py=b.y;b.x+=b.vx;b.y+=b.vy;
+if(!m){b.vx*=.985;b.vy*=.985;if(b.y<=gy){Math.abs(b.x-gx)<75*gk?goal():rs()}else if(Math.hypot(b.vx,b.vy)<.5||b.x<0||b.x>W||b.y>H)rs()}
+else{b.vy+=.45;if(py<hy&&b.y>=hy&&b.vy>0&&Math.abs(b.x-hx)<30)goal();else if(b.y>H+30||b.x<-30||b.x>W+30)rs()}}
+x.clearRect(0,0,W,H);
+if(!m){x.drawImage(PT,0,0);const gw=150*gk,gh=60*gk,u=20.5*gk;
+let g=x.createLinearGradient(0,0,0,gy);g.addColorStop(0,'#0c0606');g.addColorStop(1,'#2b1616');x.fillStyle=g;x.fillRect(0,0,W,gy);
+for(let i=0;i<W;i+=9){x.fillStyle=i%18?'#4a1520':'#6b4a2e';x.fillRect(i,gy-gh-10-(i*7%13),5,5)}
+g=x.createLinearGradient(0,gy,0,gy+340*gk);g.addColorStop(0,'#ffffff');g.addColorStop(1,'#ffffff99');x.strokeStyle=g;x.lineWidth=Math.max(1.5,3*gk);
+x.beginPath();x.moveTo(0,gy);x.lineTo(W,gy);x.rect(gx-9.16*u,gy,18.32*u,5.5*u);x.rect(gx-20.16*u,gy,40.32*u,16.5*u);x.stroke();
+x.beginPath();x.arc(gx,gy+11*u,9.15*u,Math.PI/2-.926,Math.PI/2+.926);x.stroke();{const sy=gy+11*u,sr=20*(.5+.5*Math.min(1,sy/H))*.8,sg=x.createRadialGradient(gx,sy-sr*.3,sr*.1,gx,sy,sr);sg.addColorStop(0,'#fff');sg.addColorStop(1,'#d9e6dc');x.fillStyle=sg;x.beginPath();x.arc(gx,sy,sr,0,7);x.fill()}
+x.strokeStyle='#fff';x.lineWidth=4;x.strokeRect(gx-gw/2,gy-gh,gw,gh);x.lineWidth=1;x.globalAlpha=.4;for(let i=1;i<10;i++){x.beginPath();x.moveTo(gx-gw/2+gw*i/10,gy-gh);x.lineTo(gx-gw/2+gw*i/10,gy);x.stroke()}x.globalAlpha=1;
+const r=R*(.5+.5*b.y/H);x.fillStyle='#0006';x.beginPath();x.ellipse(b.x,Math.min(b.y+r*.9,H),r*.9,r*.25,0,0,7);x.fill();fb(x,b.x,b.y,r)}
+else{const lg=(y0,y1,a,c)=>{const g=x.createLinearGradient(0,y0,0,y1);g.addColorStop(0,a);g.addColorStop(1,c);return g};
+x.fillStyle=lg(0,H,'#2a1410','#0e0605');x.fillRect(0,0,W,H);x.fillStyle=lg(H*.82,H,'#c98a4a','#6e4220');x.fillRect(0,H*.82,W,H);
+x.fillStyle=lg(hy-70,hy,'#ffffff','#b9c6d8');x.fillRect(hx-45,hy-70,90,70);x.strokeStyle=lg(hy-70,hy,'#ff6a55','#9c1010');x.lineWidth=3;x.strokeRect(hx-45,hy-70,90,70);x.strokeStyle=lg(hy-30,hy-6,'#ff9a52','#c0300f');x.lineWidth=3;x.strokeRect(hx-18,hy-30,36,24);
+x.strokeStyle=lg(hy-3,hy+3,'#ffa35c','#b32d0c');x.lineWidth=6;x.beginPath();x.moveTo(hx-34,hy);x.lineTo(hx+34,hy);x.stroke();
+x.strokeStyle=lg(hy,hy+34,'#ffffff','#9aa7b8');x.lineWidth=1.5;for(let i=0;i<5;i++){x.beginPath();x.moveTo(hx-34+i*17,hy);x.lineTo(hx-22+i*11,hy+34);x.stroke()}
+bb(x,b.x,b.y,R)}
+x.fillStyle='#e8d9c0';x.font='800 20px Manrope';x.fillText(sc+' / 7',14,28)}}}
+
+function kolo(cv,fm,){const x=cv.getContext('2d'),W=cv.width,H=cv.height,py=H*.62;let I,ph,L,a,hx,hy,vy,i,cam,tx,ok,rot,sx,ts;const CL=[...Array(6)].map(()=>({x:Math.random()*W,y:30+Math.random()*H*.35,s:.7+Math.random()*.6,v:.1+Math.random()*.2}));
+const reset=()=>{I=[{x:30,w:80}];for(let k=1;k<8;k++){const p=I[k-1];I.push({x:p.x+p.w+50+Math.random()*100,w:40+Math.random()*40})}ph=0;L=0;a=0;i=0;cam=0;rot=0;ts=0;hx=I[0].x+I[0].w-14;hy=py-17;fm.style.display='none'};reset();
+fm.innerHTML='<h2 style="text-align:center">Колобок упал</h2><button class="btn r">Повторить</button><button class="btn ghost s">Пропустить</button>';
+fm.querySelector('.r').onclick=reset;fm.querySelector('.s').onclick=()=>stop(1);
+const dn=()=>{if(ph==0){ph=1;sx=I[i].x+I[i].w}},up=()=>{if(ph==1)ph=2};cv.onpointerdown=dn;cv.onpointerup=up;cv.onpointercancel=up;
+return{t(){if(ph==1)L=Math.min(L+3.2,W);
+if(ph==2){a+=.07;if(a>=1.5708){a=1.5708;const n=I[i+1],e=sx+L;ok=e>=n.x&&e<=n.x+n.w;tx=ok?n.x+n.w-14:e;ph=3}}
+if(ph==3){hx+=3.5;rot+=.25;if(hx>=tx){if(ok){i++;if(i>=7){ph=6;setTimeout(()=>win('Вы прошли все островки!'),500)}else ph=5}else{ph=4;vy=0}}}
+if(ph==4){vy+=.7;hy+=vy;rot+=.2;if(hy>H+40&&!ts){ts=1;fm.style.display='flex'}}
+if(ph==5){const g=I[i].x-30;cam+=(g-cam)*.12;if(Math.abs(g-cam)<1){cam=g;ph=0;L=0;a=0}}
+const gr=x.createLinearGradient(0,0,0,H*.75);gr.addColorStop(0,'#2f6fd6');gr.addColorStop(1,'#bfe8ff');x.fillStyle=gr;x.fillRect(0,0,W,H);x.fillStyle='rgba(255,255,255,.88)';CL.forEach(c=>{c.x+=c.v;const X=((c.x-cam*.2)%(W+160)+W+160)%(W+160)-80;[[0,0,1],[26,-8,1.2],[54,0,.9],[26,6,1]].forEach(o=>{x.beginPath();x.arc(X+o[0]*c.s,c.y+o[1]*c.s,16*o[2]*c.s,0,7);x.fill()})});
+const gb=x.createLinearGradient(0,py,0,H);gb.addColorStop(0,'#8a5a32');gb.addColorStop(1,'#000');const gg=x.createLinearGradient(0,py-2,0,py+10);gg.addColorStop(0,'#b4f060');gg.addColorStop(1,'#1f6b2c');I.forEach(s=>{x.fillStyle=gb;x.fillRect(s.x-cam,py,s.w,H-py);x.fillStyle=gg;x.fillRect(s.x-cam,py-2,s.w,12)});
+if(L>0){x.save();x.translate(sx-cam,py);x.rotate(a);x.fillStyle='#6b3f1c';x.fillRect(-2.5,-L,5,L);x.restore()}
+x.save();x.translate(hx-cam,hy);const hg=x.createLinearGradient(0,14,0,-14);hg.addColorStop(0,'#f0801a');hg.addColorStop(1,'#ffe04d');x.fillStyle=hg;x.beginPath();x.arc(0,0,14,0,7);x.fill();x.rotate(rot);x.fillStyle='#d89a2b';x.beginPath();x.arc(9,6,1.6,0,7);x.fill();x.fillStyle='#e8803a88';x.beginPath();x.arc(-8,3,3,0,7);x.arc(8,3,3,0,7);x.fill();x.fillStyle='#222';x.beginPath();x.arc(-4.5,-3,2,0,7);x.arc(4.5,-3,2,0,7);x.fill();x.strokeStyle='#222';x.lineWidth=1.8;x.lineCap='round';x.beginPath();x.arc(0,1,6,.25,2.9);x.stroke();x.restore();
+x.fillStyle='#fff';x.shadowColor='#0008';x.shadowBlur=4;x.font='800 20px Manrope';x.fillText(i+' / 7',14,28);x.shadowBlur=0}}}
+
+/* АНАЛИЗ */
+const PR=[['Аналитик данных',0,3],['Программист',0,3],['Инженер-конструктор',0,4],['Учёный-исследователь',0,1],['Финансовый аналитик',0,3],['Юрист',0,2],
+['UX/UI дизайнер',1,0],['Режиссёр',1,2],['Архитектор',1,3],['Копирайтер',1,2],['Иллюстратор',1,4],['Маркетолог',1,2],
+['Менеджер проектов',2,3],['HR-специалист',2,1],['Преподаватель',2,1],['Психолог',2,0],['Журналист',2,1],['Бизнес-девелопер',2,4],
+['Логист',3,0],['Бухгалтер',3,4],['Системный администратор',3,0],['Прораб-строитель',4,3],['Шеф-повар',4,1],['Электрик-инженер',4,0],['Врач',4,2],['Предприниматель',4,2],['Ветеринар',4,2],['Эколог-исследователь',0,4],['Тренер',4,2],['Воспитатель детского сада',2,1],['Спасатель МЧС',4,2],['Пожарный',4,3],['Специалист по кибербезопасности',0,3],['Следователь',0,2],['Полицейский',4,2],['Инспектор по охране труда',3,0],['Судебный эксперт',0,3],['Парамедик',4,2],['Пилот',4,3],['Бортпроводник',2,3],['Водитель-дальнобойщик',4,3],['Гид-экскурсовод',2,1],['Менеджер по туризму',2,3],['Авиадиспетчер',0,3],['Капитан судна',3,4],['Механик по технике',4,0],['Дата-сайентист',0,1],['Робототехник',0,4],['Биолог',0,4],['Геймдизайнер',1,0],['Фотограф',1,4],['SMM-специалист',1,2],['Дизайнер интерьеров',1,3],['Педагог-психолог',2,0],['Медицинская сестра',4,2],['Фармацевт',3,0],['Агроном',4,0],['Парикмахер-стилист',1,2],['Менеджер по продажам',2,4],['Налоговый консультант',3,0]];const EN='223220203220000000022333001100'+'03200320'+'30200233'+'23120200'+'001002';
+const CAT=['Технологии и наука','Деньги и право','Творчество и медиа','Люди, здоровье и образование','Практика и сервис','Безопасность и спасение','Транспорт и путешествия'],CT='000011222222133321610444314033'+'555555556666666600022223334411';
+const LR=['аналитику и Python','дизайн и сторителлинг','переговоры и выступления','тайм-менеджмент и управление проектами','практику и стажировки'];
+const ADJ=['Логичный','Творческий','Коммуникативный','Системный','Практичный'],NOUN=['Стратег','Архитектор идей','Лидер','Организатор','Мастер'],
+SPH=['IT и аналитика','Креатив и медиа','Люди и образование','Управление и бизнес','Производство и сервис'];
+
+const EV=['с людьми','с животными и природой','удалённо, в тишине','руками, с инструментами'];
+const STM=PR.map(p=>p[0].toLowerCase().split(/[\s\/-]+/).filter(w=>w.length>=4&&!['данных','проектов','специалист','инженер','консультант','детского','сада'].includes(w)).map(w=>w.slice(0,Math.max(4,w.length-3))));
+function calc(ex){const cp=[0,0,0,0,0];st.cs.forEach(c=>(c.va||c.v).forEach((v,i)=>cp[i]+=1.5*c.w*v));
+const r=st.P.map((v,i)=>st.O[i]?(v+cp[i])/st.O[i]:0),mx=Math.max(...r,.01),er=st.E.map((v,i)=>st.EO[i]?v/st.EO[i]:0),em=Math.max(...er,.01);
+st.pct=r.map(v=>Math.round(30+70*v/mx));const rk=r.map((v,i)=>[v,i]).sort((a,b)=>b[0]-a[0]);st.a=rk[0][1];st.b=rk[1][1];const xs=PR.filter(p=>ex.includes(p[0]));
+st.pr=PR.map((p,k)=>{let q=r[p[1]]/mx+.6*r[p[2]]/mx+.25*er[+EN[k]]/em;st.cs.forEach(c=>{if(STM[k].some(m=>c.t.toLowerCase().includes(m)))q+=.8*Math.min(1,c.w*1.5)});
+xs.forEach(e=>{q-=.12*((e[1]==p[1])+(e[2]==p[2])+.5*(e[1]==p[2])+.5*(e[2]==p[1]))});if(ex.includes(p[0]))q-=5;return{n:p[0],a:p[1],b:p[2],s:q}}).sort((x,y)=>y.s-x.s)}
+function finish(){calc([]);$('#pl').innerHTML=st.pr.slice(0,20).map(p=>`<div class="pi" data-n="${p.n}"><i></i>${p.n}</div>`).join('');document.querySelectorAll('.pi').forEach(e=>e.onclick=()=>e.classList.toggle('x'));show('pre')}
+async function ai(){st.aiText='';try{const ex=st.ex||[],er=st.E.map((v,i)=>st.EO[i]?v/st.EO[i]:0),g={};
+PR.forEach((p,k)=>{if(!ex.includes(p[0]))(g[CAT[+CT[k]]]=g[CAT[+CT[k]]]||[]).push(p[0])});
+const lib=Object.keys(g).map(c=>c+': '+g[c].join(', ')).join('. '),cs=st.cs.map((c,i)=>`${i+1}) вопрос «${c.q}», ответ «${c.t}»`).join('; ');
+const body={model:'openai',messages:[{role:'system',content:'Ты опытный профориентолог. Отвечай только JSON без пояснений.'},{role:'user',content:`Профиль человека (0-100): ${AX.map((a,i)=>a+' '+st.pct[i]).join(', ')}. Комфортная среда: ${EV[er.indexOf(Math.max(...er))]}. Алгоритм считает лучшими: ${st.pr.slice(0,10).map(p=>p.n).join(', ')}. Человеку точно не подходят: ${ex.join(', ')||'нет'}. Свои ответы человека: ${cs||'нет'}. Все профессии по категориям: ${lib}. Верни JSON: {"order":["7 самых подходящих профессий из списка, по порядку, названия точно как в списке"],"custom":[для каждого своего ответа массив из 5 чисел от 0 до 1: логика, креативность, общение, системность, практичность],"text":"2 тёплых предложения о сильных сторонах, обращение на Вы"}`}]};
+const c=new AbortController(),tm=setTimeout(()=>c.abort(),12000),r=await fetch('https://text.pollinations.ai/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:c.signal});clearTimeout(tm);
+const j=JSON.parse((await r.text()).match(/\{[\s\S]*\}/)[0]);
+if(Array.isArray(j.custom))st.cs.forEach((c,i)=>{const a=j.custom[i];if(Array.isArray(a)&&a.length==5&&a.every(n=>typeof n=='number'&&n>=0&&n<=1)){const z=a.reduce((x,y)=>x+y,0);if(z>0)c.va=a.map(n=>n/z)}});
+calc(ex);
+if(Array.isArray(j.order)){const B=[.5,.4,.3,.25,.2,.15,.1];j.order.slice(0,7).forEach((n,i)=>{const p=st.pr.find(q=>q.n.toLowerCase()==String(n).toLowerCase());if(p)p.s+=B[i]});st.pr.sort((x,y)=>y.s-x.s)}
+if(typeof j.text=='string'&&j.text.length>20){const x=j.text.replace(/[<>&]/g,'').slice(0,200),d=x.lastIndexOf('.');st.aiText=d>40?x.slice(0,d+1):x}}catch(e){}}
+async function preNext(){st.ex=[...document.querySelectorAll('.pi.x')].map(e=>e.dataset.n);calc(st.ex);show('load');const t=Date.now();await ai();await new Promise(r=>setTimeout(r,Math.max(0,1500-(Date.now()-t))));showRes()}
+function showRes(){const L=(a,c)=>a.map(p=>`<div class="row ${c}">${p.n}</div>`).join(''),er=st.E.map((v,i)=>st.EO[i]?v/st.EO[i]:0);
+$('#rb').innerHTML=`<div class="row s">Тип: ${ADJ[st.a]+' '+NOUN[st.b]} · сфера: ${SPH[st.a]}</div><div class="row s">Тебе комфортнее работать: ${EV[er.indexOf(Math.max(...er))]}</div>${st.aiText?`<div class="row s">${st.aiText}</div>`:''}<h3>✅ ТВОИ 2 ПРОФЕССИИ</h3>${L(st.pr.slice(0,2),'g')}<h3>⛔ 2 ТОЧНО НЕ ТВОИ</h3>${L(st.pr.slice(-2),'r')}<h3>🎯 5 ПОДОБРАННЫХ СПЕЦИАЛЬНОСТЕЙ ДЛЯ ВАС</h3>${L(st.pr.slice(2,7),'s')}`;
+$('#cb').className='btn '+(st.N<30?'lock':'glow');$('#cb').textContent='🏅 Сгенерировать PNG сертификат';st.cv=0;$('#rr').style.display=st.N<30?'block':'none';$('#nv').classList.remove('fast');show('res');revealRes()}
+function certClick(){if(st.N<30)return toast('❗ Сертификат выдаётся от среднего анализа (30+ вопросов)');if(st.cv)return show('cert');show('share')}
+function back(){if(st.cv)$('#cb').textContent='👁 Просмотр сертификата';$('#nv').classList.add('fast');show('res');revealRes(1)}
+function doShare(){const u='https://t.me/share/url?url='+encodeURIComponent(APP_URL)+'&text='+encodeURIComponent('Пройди тест и узнай свою профессию 🧭');
+st.t=Date.now();st.w=1;tg&&tg.openTelegramLink?tg.openTelegramLink(u):window.open(u,'_blank')}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState!='visible'||!st.w)return;st.w=0;
+if(Date.now()-st.t>4000)buildCert();else toast('❗ Мы не увидели отправки. Отправь ссылку другу и вернись')});
+
+const DS='Находит в цифрах закономерности и помогает принимать решения.|Пишет код и создаёт приложения, сайты и сервисы.|Проектирует технику и механизмы, рассчитывает их прочность.|Ставит эксперименты, проверяет гипотезы, открывает новое.|Оценивает бизнес и инвестиции, считает риски и прибыль.|Защищает интересы людей и компаний, работает с законами.|Проектирует удобные и красивые интерфейсы приложений.|Собирает идею, команду и кадры в цельную историю.|Придумывает здания и пространства и рисует чертежи.|Пишет тексты, которые продают, цепляют и запоминаются.|Создаёт рисунки для книг, брендов и игр.|Изучает аудиторию и продвигает продукты и бренды.|Ведёт проект от идеи до результата: сроки, люди, бюджет.|Подбирает людей в команду и развивает культуру компании.|Объясняет сложное простым языком и вдохновляет учиться.|Помогает людям разобраться в себе и справиться с трудностями.|Ищет факты, берёт интервью и рассказывает истории.|Ищет партнёров и новые рынки, договаривается о сделках.|Выстраивает маршруты и сроки доставки грузов.|Ведёт учёт, отчёты и налоги, следит за порядком в деньгах.|Настраивает серверы и сети, чтобы всё работало без сбоев.|Руководит стройкой: бригады, материалы, сроки и качество.|Создаёт меню, управляет кухней и отвечает за вкус.|Проектирует и обслуживает электросети и оборудование.|Диагностирует болезни, назначает лечение, спасает здоровье.|Запускает своё дело, рискует и отвечает за результат.|Лечит и защищает животных, консультирует владельцев.|Изучает природу и находит способы её беречь.|Тренирует людей и команды, строит планы подготовки и мотивирует.|Растит и развивает детей: игры, занятия, забота и безопасность.|Приходит на помощь в беде: спасает людей и оказывает первую помощь.|Тушит пожары и спасает людей, держит технику в готовности.|Защищает компьютеры и данные от взломов и мошенников.|Расследует дела, ищет улики и выясняет, как всё произошло.|Охраняет порядок, помогает людям и защищает их от опасности.|Проверяет безопасность на производстве и следит за правилами.|Изучает улики в лаборатории и помогает раскрывать дела.|Оказывает срочную медицинскую помощь на выезде.|Управляет самолётом и отвечает за безопасность рейса.|Заботится о пассажирах в полёте и следит за порядком на борту.|Перевозит грузы на дальние расстояния, планирует маршрут и отдых.|Рассказывает об интересных местах и ведёт туристов по маршруту.|Собирает путешествия: маршруты, билеты, отели и впечатления.|Руководит движением самолётов, чтобы всё шло безопасно.|Управляет судном и командой, отвечает за рейс.|Чинит и обслуживает технику, находит поломки.|Учит компьютер находить закономерности в больших данных.|Создаёт и программирует роботов, собирает их своими руками.|Изучает живую природу в лаборатории и в поле.|Придумывает правила, миры и механику компьютерных игр.|Снимает людей и события и превращает кадры в истории.|Ведёт соцсети бренда: идеи, тексты, картинки, общение.|Продумывает пространство: планировку, цвета и мебель.|Помогает детям учиться, общаться и справляться с трудностями.|Заботится о больных, помогает врачам и делает процедуры.|Подбирает лекарства и консультирует людей.|Выращивает культуры и добивается хорошего урожая.|Создаёт причёски и образы, помогает чувствовать себя уверенно.|Находит клиентов, договаривается и продаёт товары или услуги.|Помогает людям и компаниям разобраться в налогах и документах.'.split('|');
+const CH=['Вы мыслите ясно и глубоко и умеете разбираться в самом сложном.','Вас отличает нестандартное мышление и умение вдохновлять идеями.','Вы легко находите общий язык и умеете вести людей за собой.','Вы цените порядок и умеете превращать хаос в чёткую систему.','Вы надёжны в деле и всегда доводите задуманное до результата.'],
+CH2=['Ваша сильная сторона — логика и анализ.','Вам помогает креативность и свежий взгляд.','Вам помогает умение слышать людей.','Вам помогает системность и организованность.','Вам помогает практичность и трудолюбие.'];
+async function buildCert(){st.cv=1;$('#ra').textContent=st.N<50?'Пройти заново и выбрать самый точный анализ':'Пройти тест заново';show('cert');const S1='"Cormorant Garamond",Georgia,serif',S2='Manrope,Arial,sans-serif',S3='"Bad Script","Marck Script",cursive';
+try{await Promise.all([`500 40px ${S1}`,`italic 500 40px ${S1}`,`60px ${S3}`,`400 24px ${S2}`].map(f=>document.fonts.load(f,'Аа')))}catch(e){}
+const c=$('#cc'),W=1054,H=1492,x=c.getContext('2d'),K='#1a120e';c.width=W;c.height=H;
+const T=(t,X,Y,f,col,ls,al)=>{x.font=f;x.fillStyle=col||K;x.letterSpacing=(ls||0)+'px';x.textAlign=al||'center';x.fillText(t,X,Y)};
+const hl=(a,b,y)=>{x.strokeStyle=K;x.lineWidth=1.3;x.beginPath();x.moveTo(a,y);x.lineTo(b,y);x.stroke()};
+const sr=(X,Y,r)=>{x.fillStyle=K;x.beginPath();for(let i=0;i<8;i++){const a=i*Math.PI/4-Math.PI/2,R=i%2?r*.28:r;x[i?'lineTo':'moveTo'](X+R*Math.cos(a),Y+R*Math.sin(a))}x.fill()};
+const dv=(y,a,b,m,d,e)=>{hl(a,b,y);hl(d,e,y);sr(m,y,15)};
+const wr=(t,w,f,ls)=>{x.font=f;x.letterSpacing=ls+'px';const o=[];let l='';t.split(' ').forEach(wd=>{const n=l?l+' '+wd:wd;if(x.measureText(n).width>w&&l){o.push(l);l=wd}else l=n});o.push(l);return o};
+const bz=(p,t)=>{const u=1-t;return[u*u*u*p[0]+3*u*u*t*p[2]+3*u*t*t*p[4]+t*t*t*p[6],u*u*u*p[1]+3*u*u*t*p[3]+3*u*t*t*p[5]+t*t*t*p[7]]};
+const rb=(p,w)=>{x.fillStyle='#4f0c19';for(let t=0;t<=1;t+=.003){const[a,b]=bz(p,t);x.beginPath();x.arc(a,b,w*Math.pow(Math.sin(Math.PI*t),.7)/2+.4,0,7);x.fill()}};
+const ln=(p,col,w)=>{x.strokeStyle=col;x.lineWidth=w;x.beginPath();x.moveTo(p[0],p[1]);x.bezierCurveTo(p[2],p[3],p[4],p[5],p[6],p[7]);x.stroke()};
+let g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#ecdcc3');g.addColorStop(.5,'#dcc3a0');g.addColorStop(1,'#cdae88');x.fillStyle=g;x.fillRect(0,0,W,H);
+g=x.createRadialGradient(W/2,H*.4,50,W/2,H*.4,900);g.addColorStop(0,'#ffffff44');g.addColorStop(1,'#ffffff00');x.fillStyle=g;x.fillRect(0,0,W,H);
+[[-30,430,140,220,170,90,50,-40,34],[-30,520,170,700,110,980,-30,1130,40],[-30,1250,200,1330,330,1450,430,1540,26],[1090,980,950,1130,1030,1330,880,1540,34],[1100,1350,1000,1400,960,1470,850,1540,22]].forEach(p=>rb(p.slice(0,8),p[8]));
+[[-20,300,200,150,400,60,560,-10],[1080,60,900,40,800,20,780,-5],[-20,720,70,540,40,430,-10,380],[1080,150,1000,300,1060,500,1090,640],[1070,700,900,900,1000,1100,1090,1230],[-20,1100,200,1200,300,1400,260,1520],[-20,200,150,120,260,60,400,-10]].forEach((p,i)=>{ln(p,i%2?'#5b1020':K,1.3)});
+const ar=ADJ[st.a]+' '+NOUN[st.b],top=st.pr.slice(0,3),d=new Date().toLocaleDateString('ru-RU'),parts=st.fio.split(' ');
+let fs=210;do{x.font=`500 ${fs}px ${S1}`;x.letterSpacing='0px';fs-=4}while(x.measureText('СЕРТИФИКАТ').width>860);T('СЕРТИФИКАТ',W/2,262,`500 ${fs+4}px ${S1}`);
+const sp=SPH[st.a].toUpperCase().replace(' И ',' & '),fa=`italic 500 36px ${S1}`,fb2=`400 30px ${S2}`;x.font=fa;x.letterSpacing='0px';const w1=x.measureText('подходящая сфера: ').width;x.font=fb2;x.letterSpacing='5px';const w2=x.measureText(sp).width,X0=(W-w1-w2)/2;
+T('подходящая сфера:',X0,306,fa,0,0,'left');T(sp,X0+w1,306,fb2,0,5,'left');hl(110,Math.max(130,X0-25),297);hl(Math.min(924,X0+w1+w2+25),944,297);
+dv(350,335,500,527,555,730);
+T('Ваш архетип: '+ar,W/2,415,`italic 500 46px ${S1}`);
+T('Характеристика личности',W/2,505,`italic 500 66px ${S1}`);
+wr((st.aiText||CH[st.a]+' '+CH2[st.b])+' Вас отличает стремление к постоянному развитию.',700,`400 25px ${S2}`,2).forEach((l,i)=>T(l,W/2,575+i*46,`400 25px ${S2}`,'#2a1d17',2));
+dv(790,375,505,530,555,685);
+T('Лучшие профессии для вас',W/2,870,`italic 500 62px ${S1}`);
+const cx=[240,538,855];top.forEach((p,i)=>{const tl=wr(p.n,250,`500 31px ${S1}`,0);tl.forEach((l,j)=>T(l,cx[i],930+j*34,`500 31px ${S1}`));wr(DS[PR.findIndex(q=>q[0]==p.n)]+' Начни с: '+LR[p.a]+'.',250,`400 17px ${S2}`,1.5).forEach((l,j)=>T(l,cx[i],978+(tl.length-1)*34+j*29,`400 17px ${S2}`,'#2a1d17',1.5))});
+x.fillStyle=K;[385,690].forEach(v=>x.fillRect(v,900,1.3,235));
+dv(1175,360,500,527,555,695);
+T(d,275,1300,`500 34px ${S2}`,0,4);hl(148,403,1318);T('ДАТА',275,1350,`400 17px ${S2}`,0,4);x.fillRect(443,1235,1.3,135);
+const sn=parts[0],nm=parts.slice(1).join(' ');let z1=100,z2=78;while(z1>30){x.font=`${z1}px ${S3}`;x.letterSpacing='0px';if(x.measureText(sn).width<=440)break;z1-=4}while(z2>26){x.font=`${z2}px ${S3}`;if(x.measureText(nm).width<=440)break;z2-=4}
+T(sn,665,1300,`${z1}px ${S3}`);if(nm)T(nm,665,1375,`${z2}px ${S3}`);dv(1430,465,630,655,680,860)}
+async function dl(){const b=await new Promise(r=>$('#cc').toBlob(r,'image/png'));if(!b)return toast('❗ Не удалось создать изображение');
+const f=new File([b],'certificate.png',{type:'image/png'});
+try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}}catch(e){if(e.name=='AbortError')return}
+const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='certificate.png';document.body.appendChild(a);a.click();a.remove();toast('✅ Готово. Нет файла? Зажми картинку и сохрани')}
+function again(){st={};['n1','n2','n3'].forEach(i=>$('#'+i).value='');show('name')}
+</script></body></html>
