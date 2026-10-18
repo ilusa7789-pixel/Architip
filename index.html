@@ -167,7 +167,7 @@ h3{font:800 13px Unbounded;margin:22px 0 4px;color:var(--mut)}
 
 <script>
 const tg=window.Telegram&&Telegram.WebApp;if(tg){tg.ready();tg.expand();try{tg.disableVerticalSwipes()}catch(e){}document.documentElement.style.setProperty('--tt',((tg.safeAreaInset&&tg.safeAreaInset.top||0)+(tg.contentSafeAreaInset&&tg.contentSafeAreaInset.top||0))+'px')}
-const APP_URL='https://t.me/YOUR_BOT/app'; // ← замени на ссылку своего мини-приложения
+const APP_URL='t.me/archetip_Profession_bot'; // ← замени на ссылку своего мини-приложения
 const $=s=>document.querySelector(s),AX=['Логика','Креативность','Коммуникация','Системность','Практичность'];
 const show=id=>{document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));const e=$('#'+id);e.classList.add('on');e.scrollTop=0;$('#nv').classList.toggle('on',id=='res'||id=='share')};
 const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),3200)};
