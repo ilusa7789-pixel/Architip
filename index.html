@@ -106,6 +106,10 @@ h3{font:800 13px Unbounded;margin:22px 0 4px;color:var(--mut)}
 .pi i{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #8a7f72;transition:.2s}.pi.x i{background:#e5383b;border-color:#e5383b;box-shadow:0 0 12px #e5383b}
 .spin{width:54px;height:54px;border-radius:50%;border:4px solid #4a3030;border-top-color:#e8d9c0;margin:0 auto 20px;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
 .bk{display:block;background:none;border:0;color:var(--bei);opacity:.8;font:700 14px Manrope,sans-serif;padding:6px 0;margin-bottom:8px;cursor:pointer}
+.screen{text-shadow:0 0 3px #000,0 0 9px #000c,0 2px 4px #000}
+.big,.sub{text-shadow:3px 3px 0 #000,0 0 10px #000}
+input,textarea,#res .btn.glow,#share .btn.glow,.two .btn.on{text-shadow:none}
+#ci{width:100%;max-width:420px;border-radius:4px;box-shadow:0 10px 40px #000a;margin-bottom:14px;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
 </style></head><body>
 <svg id="bg" viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice"></svg><div id="nv"></div>
 <div id="toast"></div>
@@ -160,14 +164,15 @@ h3{font:800 13px Unbounded;margin:22px 0 4px;color:var(--mut)}
 
 <section class="screen" id="share"><div class="box" style="text-align:center"><div style="font-size:54px">💌</div><h2>Отправь тест другу</h2>
 <p class="d">Чтобы открыть сертификат, отправь ссылку на тест хотя бы одному другу в Telegram.</p>
-<button class="btn glow" onclick="doShare()">Отправить ссылку</button></div></section>
+<button class="btn glow" onclick="doShare()">Отправить ссылку</button>
+<button class="btn ghost" id="sc" style="display:none" onclick="okShare(1)">Я отправил(а), продолжить</button></div></section>
 
-<section class="screen" id="cert"><canvas id="cc"></canvas><div class="box" style="margin:0"><button class="btn glow" onclick="dl()">⬇ Скачать PNG сертификат</button><button class="btn ghost" onclick="back()">← Вернуться к моим профессиям</button><button class="btn ghost" id="ra" onclick="again()">Пройти тест заново</button></div></section>
+<section class="screen" id="cert"><canvas id="cc" style="display:none"></canvas><img id="ci" alt="Сертификат" style="display:none"><p class="hn" style="text-align:center;margin:0 0 14px">Не скачалось? Нажми и удерживай картинку → «Сохранить в Фото» или «Сохранить в Галерею»</p><div class="box" style="margin:0"><button class="btn glow" onclick="dl()">⬇ Скачать PNG сертификат</button><button class="btn ghost" onclick="back()">← Вернуться к моим профессиям</button><button class="btn ghost" id="ra" onclick="again()">Пройти тест заново</button></div></section>
 <div id="game"></div>
 
 <script>
 const tg=window.Telegram&&Telegram.WebApp;if(tg){tg.ready();tg.expand();try{tg.disableVerticalSwipes()}catch(e){}document.documentElement.style.setProperty('--tt',((tg.safeAreaInset&&tg.safeAreaInset.top||0)+(tg.contentSafeAreaInset&&tg.contentSafeAreaInset.top||0))+'px')}
-const APP_URL='t.me/archetip_Profession_bot'; // ← замени на ссылку своего мини-приложения
+const APP_URL='https://t.me/YOUR_BOT/app'; // ← замени на ссылку своего мини-приложения
 const $=s=>document.querySelector(s),AX=['Логика','Креативность','Коммуникация','Системность','Практичность'];
 const show=id=>{document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));const e=$('#'+id);e.classList.add('on');e.scrollTop=0;$('#nv').classList.toggle('on',id=='res'||id=='share')};
 const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),3200)};
@@ -369,15 +374,16 @@ $('#cb').className='btn '+(st.N<30?'lock':'glow');$('#cb').textContent='🏅 С�
 function certClick(){if(st.N<30)return toast('❗ Сертификат выдаётся от среднего анализа (30+ вопросов)');if(st.cv)return show('cert');show('share')}
 function back(){if(st.cv)$('#cb').textContent='👁 Просмотр сертификата';$('#nv').classList.add('fast');show('res');revealRes(1)}
 function doShare(){const u='https://t.me/share/url?url='+encodeURIComponent(APP_URL)+'&text='+encodeURIComponent('Пройди тест и узнай свою профессию 🧭');
-st.t=Date.now();st.w=1;tg&&tg.openTelegramLink?tg.openTelegramLink(u):window.open(u,'_blank')}
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState!='visible'||!st.w)return;st.w=0;
-if(Date.now()-st.t>4000)buildCert();else toast('❗ Мы не увидели отправки. Отправь ссылку другу и вернись')});
-
+st.t=Date.now();st.w=1;setTimeout(()=>{$('#sc').style.display='block'},5000);tg&&tg.openTelegramLink?tg.openTelegramLink(u):window.open(u,'_blank')}
+function okShare(m){if(!st.w)return;if(Date.now()-st.t<4000){if(m)toast('❗ Мы не увидели отправки. Отправь ссылку другу и вернись');return}st.w=0;buildCert()}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState=='visible')okShare()});window.addEventListener('focus',()=>okShare());window.addEventListener('pageshow',()=>okShare());
+if(tg&&tg.onEvent)tg.onEvent('activated',()=>okShare());
 const DS='Находит в цифрах закономерности и помогает принимать решения.|Пишет код и создаёт приложения, сайты и сервисы.|Проектирует технику и механизмы, рассчитывает их прочность.|Ставит эксперименты, проверяет гипотезы, открывает новое.|Оценивает бизнес и инвестиции, считает риски и прибыль.|Защищает интересы людей и компаний, работает с законами.|Проектирует удобные и красивые интерфейсы приложений.|Собирает идею, команду и кадры в цельную историю.|Придумывает здания и пространства и рисует чертежи.|Пишет тексты, которые продают, цепляют и запоминаются.|Создаёт рисунки для книг, брендов и игр.|Изучает аудиторию и продвигает продукты и бренды.|Ведёт проект от идеи до результата: сроки, люди, бюджет.|Подбирает людей в команду и развивает культуру компании.|Объясняет сложное простым языком и вдохновляет учиться.|Помогает людям разобраться в себе и справиться с трудностями.|Ищет факты, берёт интервью и рассказывает истории.|Ищет партнёров и новые рынки, договаривается о сделках.|Выстраивает маршруты и сроки доставки грузов.|Ведёт учёт, отчёты и налоги, следит за порядком в деньгах.|Настраивает серверы и сети, чтобы всё работало без сбоев.|Руководит стройкой: бригады, материалы, сроки и качество.|Создаёт меню, управляет кухней и отвечает за вкус.|Проектирует и обслуживает электросети и оборудование.|Диагностирует болезни, назначает лечение, спасает здоровье.|Запускает своё дело, рискует и отвечает за результат.|Лечит и защищает животных, консультирует владельцев.|Изучает природу и находит способы её беречь.|Тренирует людей и команды, строит планы подготовки и мотивирует.|Растит и развивает детей: игры, занятия, забота и безопасность.|Приходит на помощь в беде: спасает людей и оказывает первую помощь.|Тушит пожары и спасает людей, держит технику в готовности.|Защищает компьютеры и данные от взломов и мошенников.|Расследует дела, ищет улики и выясняет, как всё произошло.|Охраняет порядок, помогает людям и защищает их от опасности.|Проверяет безопасность на производстве и следит за правилами.|Изучает улики в лаборатории и помогает раскрывать дела.|Оказывает срочную медицинскую помощь на выезде.|Управляет самолётом и отвечает за безопасность рейса.|Заботится о пассажирах в полёте и следит за порядком на борту.|Перевозит грузы на дальние расстояния, планирует маршрут и отдых.|Рассказывает об интересных местах и ведёт туристов по маршруту.|Собирает путешествия: маршруты, билеты, отели и впечатления.|Руководит движением самолётов, чтобы всё шло безопасно.|Управляет судном и командой, отвечает за рейс.|Чинит и обслуживает технику, находит поломки.|Учит компьютер находить закономерности в больших данных.|Создаёт и программирует роботов, собирает их своими руками.|Изучает живую природу в лаборатории и в поле.|Придумывает правила, миры и механику компьютерных игр.|Снимает людей и события и превращает кадры в истории.|Ведёт соцсети бренда: идеи, тексты, картинки, общение.|Продумывает пространство: планировку, цвета и мебель.|Помогает детям учиться, общаться и справляться с трудностями.|Заботится о больных, помогает врачам и делает процедуры.|Подбирает лекарства и консультирует людей.|Выращивает культуры и добивается хорошего урожая.|Создаёт причёски и образы, помогает чувствовать себя уверенно.|Находит клиентов, договаривается и продаёт товары или услуги.|Помогает людям и компаниям разобраться в налогах и документах.'.split('|');
 const CH=['Вы мыслите ясно и глубоко и умеете разбираться в самом сложном.','Вас отличает нестандартное мышление и умение вдохновлять идеями.','Вы легко находите общий язык и умеете вести людей за собой.','Вы цените порядок и умеете превращать хаос в чёткую систему.','Вы надёжны в деле и всегда доводите задуманное до результата.'],
 CH2=['Ваша сильная сторона — логика и анализ.','Вам помогает креативность и свежий взгляд.','Вам помогает умение слышать людей.','Вам помогает системность и организованность.','Вам помогает практичность и трудолюбие.'];
-async function buildCert(){st.cv=1;$('#ra').textContent=st.N<50?'Пройти заново и выбрать самый точный анализ':'Пройти тест заново';show('cert');const S1='"Cormorant Garamond",Georgia,serif',S2='Manrope,Arial,sans-serif',S3='"Bad Script","Marck Script",cursive';
-try{await Promise.all([`500 40px ${S1}`,`italic 500 40px ${S1}`,`60px ${S3}`,`400 24px ${S2}`].map(f=>document.fonts.load(f,'Аа')))}catch(e){}
+async function buildCert(){try{await bc()}catch(e){toast('❗ Не удалось создать сертификат, попробуй ещё раз');console.error(e)}}
+async function bc(){st.cv=1;$('#ra').textContent=st.N<50?'Пройти заново и выбрать самый точный анализ':'Пройти тест заново';show('cert');const S1='"Cormorant Garamond",Georgia,serif',S2='Manrope,Arial,sans-serif',S3='"Bad Script","Marck Script",cursive';
+try{await Promise.race([Promise.all([`500 40px ${S1}`,`italic 500 40px ${S1}`,`60px ${S3}`,`400 24px ${S2}`].map(f=>document.fonts.load(f,'Аа'))),new Promise(r=>setTimeout(r,2500))])}catch(e){}
 const c=$('#cc'),W=1054,H=1492,x=c.getContext('2d'),K='#1a120e';c.width=W;c.height=H;
 const T=(t,X,Y,f,col,ls,al)=>{x.font=f;x.fillStyle=col||K;x.letterSpacing=(ls||0)+'px';x.textAlign=al||'center';x.fillText(t,X,Y)};
 const hl=(a,b,y)=>{x.strokeStyle=K;x.lineWidth=1.3;x.beginPath();x.moveTo(a,y);x.lineTo(b,y);x.stroke()};
@@ -406,10 +412,11 @@ x.fillStyle=K;[385,690].forEach(v=>x.fillRect(v,900,1.3,235));
 dv(1175,360,500,527,555,695);
 T(d,275,1300,`500 34px ${S2}`,0,4);hl(148,403,1318);T('ДАТА',275,1350,`400 17px ${S2}`,0,4);x.fillRect(443,1235,1.3,135);
 const sn=parts[0],nm=parts.slice(1).join(' ');let z1=100,z2=78;while(z1>30){x.font=`${z1}px ${S3}`;x.letterSpacing='0px';if(x.measureText(sn).width<=440)break;z1-=4}while(z2>26){x.font=`${z2}px ${S3}`;if(x.measureText(nm).width<=440)break;z2-=4}
-T(sn,665,1300,`${z1}px ${S3}`);if(nm)T(nm,665,1375,`${z2}px ${S3}`);dv(1430,465,630,655,680,860)}
-async function dl(){const b=await new Promise(r=>$('#cc').toBlob(r,'image/png'));if(!b)return toast('❗ Не удалось создать изображение');
+T(sn,665,1300,`${z1}px ${S3}`);if(nm)T(nm,665,1375,`${z2}px ${S3}`);dv(1430,465,630,655,680,860);$('#ci').src=c.toDataURL('image/png');c.style.display='none';$('#ci').style.display='block'}
+async function dl(){const c=$('#cc'),b=await new Promise(r=>c.toBlob(r,'image/png'));if(!b)return toast('❗ Не удалось создать изображение');
 const f=new File([b],'certificate.png',{type:'image/png'});
-try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}}catch(e){if(e.name=='AbortError')return}
-const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='certificate.png';document.body.appendChild(a);a.click();a.remove();toast('✅ Готово. Нет файла? Зажми картинку и сохрани')}
+try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Сертификат'});return}}catch(e){if(e.name=='AbortError')return}
+try{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='certificate.png';document.body.appendChild(a);a.click();a.remove()}catch(e){}
+toast('📲 Зажми картинку и выбери «Сохранить»');$('#ci').scrollIntoView({behavior:'smooth'})}
 function again(){st={};['n1','n2','n3'].forEach(i=>$('#'+i).value='');show('name')}
 </script></body></html>
